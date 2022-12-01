@@ -1,25 +1,35 @@
 version: '3.4'
 
 services:
-  eshopwebmvc:
-    image: ${DOCKER_REGISTRY-}eshopwebmvc
+  web:
+    image: ${DOCKER_REGISTRY-}web
     build:
       context: .
       dockerfile: src/Web/Dockerfile
     depends_on:
       - "sqlserver"
-  eshoppublicapi:
-    image: ${DOCKER_REGISTRY-}eshoppublicapi
+    ports:
+      - "80:80"
+
+  publicapi:
+    image: ${DOCKER_REGISTRY-}publicapi
     build:
       context: .
       dockerfile: src/PublicApi/Dockerfile
     depends_on:
       - "sqlserver"
+    ports:
+      - "80:80"
+
   sqlserver:
-    image: mcr.microsoft.com/azure-sql-edge
+    image: mcr.microsoft.com/mssql/server:2017-latest
     ports:
       - "1433:1433"
     environment:
-      - SA_PASSWORD=@someThingComplicated1234
+      - SA_PASSWORD=tvxs721#3
       - ACCEPT_EULA=Y
-
+    volumes:
+       - db-data1:/var/lib/mysql/data
+ 
+volumes:
+  db-data1:

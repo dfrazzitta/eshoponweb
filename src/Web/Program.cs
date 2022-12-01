@@ -1,4 +1,5 @@
-﻿using System.Net.Mime;
+﻿using System.Net;
+using System.Net.Mime;
 using Ardalis.ListStartupServices;
 using BlazorAdmin;
 using BlazorAdmin.Services;
@@ -18,7 +19,21 @@ using Microsoft.eShopWeb.Web.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
+/*
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    serverOptions.ConfigureEndpointDefaults(listenOptions =>
+    {
+        //listenOptions.UseHttps("k8svc.pfx", "");
+        listenOptions.UseHttps("/app/k8svc.pfx", "");
+    });
+    serverOptions.Listen(IPAddress.Any, 443, listenOptions =>
+    {
+        listenOptions.UseConnectionLogging();
+    });
+});
 
+    */
 builder.Logging.AddConsole();
 
 Microsoft.eShopWeb.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
